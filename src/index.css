@@ -1,0 +1,152 @@
+@import "tailwindcss";
+
+@theme {
+  /* ---- Color: dusk street-market palette ----
+     Deliberately not cream+terracotta, not black+neon.
+     Deep dusk indigo grounds the page (evening market backdrop);
+     three warm accents pulled from real market materials:
+     marigold garlands, chili strings, mint chutney. */
+  --color-dusk-950: #10132b;
+  --color-dusk-900: #161b38;
+  --color-dusk-800: #1e2749;
+  --color-dusk-700: #2b3462;
+  --color-dusk-600: #3c4680;
+  --color-dusk-400: #7b84b8;
+  --color-dusk-200: #c4c9e6;
+
+  --color-marigold-500: #ffb100;
+  --color-marigold-400: #ffc233;
+  --color-marigold-300: #ffd670;
+
+  --color-chili-600: #c73a15;
+  --color-chili-500: #e8491d;
+  --color-chili-400: #f16a42;
+
+  --color-mint-600: #3a8a5b;
+  --color-mint-500: #4ca771;
+  --color-mint-300: #8fd1ac;
+
+  --color-paper-50: #fbf3e6;
+  --color-paper-100: #f5e9d6;
+  --color-paper-200: #ead6b3;
+
+  /* ---- Type ---- */
+  --font-display: "Bricolage Grotesque", "Inter", sans-serif;
+  --font-body: "Inter", system-ui, sans-serif;
+  --font-mono: "IBM Plex Mono", ui-monospace, monospace;
+}
+
+@layer base {
+  html { color-scheme: dark; }
+
+  body {
+    background-color: var(--color-dusk-950);
+    color: var(--color-paper-50);
+    font-family: var(--font-body);
+    -webkit-font-smoothing: antialiased;
+  }
+
+  ::selection {
+    background-color: var(--color-marigold-500);
+    color: var(--color-dusk-950);
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--color-marigold-400);
+    outline-offset: 2px;
+    border-radius: 4px;
+  }
+}
+
+@layer components {
+  .price-tag {
+    font-family: var(--font-mono);
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.25rem;
+    padding: 0.2rem 0.65rem 0.2rem 0.85rem;
+    background: var(--color-marigold-500);
+    color: var(--color-dusk-950);
+    font-weight: 600;
+    border-radius: 3px 8px 8px 3px;
+  }
+  .price-tag::before {
+    content: "";
+    position: absolute;
+    left: -3px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 6px;
+    height: 6px;
+    border-radius: 999px;
+    background: var(--color-dusk-950);
+  }
+
+  .stall-card {
+    background: linear-gradient(180deg, var(--color-dusk-800), var(--color-dusk-900));
+    border: 1px solid var(--color-dusk-700);
+    border-radius: 20px 20px 12px 12px;
+    transition: transform 0.2s ease, box-shadow 0.3s ease, border-color 0.3s ease;
+  }
+  .stall-card:hover {
+    transform: translateY(-3px);
+    border-color: var(--color-marigold-500);
+    box-shadow: 0 0 0 1px var(--color-marigold-500), 0 12px 32px -8px rgba(255, 177, 0, 0.35);
+  }
+
+  .glow-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 999px;
+    background: var(--color-mint-500);
+    animation: glow-pulse 2.2s ease-in-out infinite;
+  }
+  @keyframes glow-pulse {
+    0%, 100% { box-shadow: 0 0 0 0 rgba(76, 167, 113, 0.55); }
+    50% { box-shadow: 0 0 0 6px rgba(76, 167, 113, 0); }
+  }
+
+  .input {
+    width: 100%;
+    background: var(--color-dusk-900);
+    border: 1px solid var(--color-dusk-600);
+    border-radius: 10px;
+    padding: 0.6rem 0.85rem;
+    color: var(--color-paper-50);
+    font-family: var(--font-body);
+  }
+  .input::placeholder { color: var(--color-dusk-400); }
+  .input:focus {
+    outline: 2px solid var(--color-marigold-400);
+    outline-offset: 1px;
+    border-color: var(--color-marigold-400);
+  }
+
+  /* Decorative dotted-lantern-string pattern used behind the hero, evoking
+     bulb strings over a market lane without being literal or cluttered. */
+  .market-glow {
+    background-image:
+      radial-gradient(circle at 15% 20%, rgba(255,177,0,0.16), transparent 40%),
+      radial-gradient(circle at 85% 10%, rgba(232,73,29,0.14), transparent 40%),
+      radial-gradient(circle at 60% 60%, rgba(76,167,113,0.10), transparent 45%);
+  }
+
+  .float-slow { animation: float-slow 6s ease-in-out infinite; }
+  @keyframes float-slow {
+    0%, 100% { transform: translateY(0) rotate(var(--rot, 0deg)); }
+    50% { transform: translateY(-10px) rotate(var(--rot, 0deg)); }
+  }
+
+  .enter-up {
+    animation: enter-up 0.6s cubic-bezier(0.16, 1, 0.3, 1) both;
+  }
+  @keyframes enter-up {
+    from { opacity: 0; transform: translateY(14px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .stall-card, .glow-dot, .float-slow, .enter-up { animation: none; transition: none; }
+  }
+}
